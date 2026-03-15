@@ -22,12 +22,13 @@ export const addNote = (title, body) => {
 
 export const removeNote = (title) => {
   const notes = loadNotes();
-  const noteToRemove = notes.filter((note) => note.title === title);
+  const notesToKeep = notes.filter((note) => note.title !== title);
 
-  if (noteToRemove.length > 0) {
-    console.log(`Removed note with title ${title}`);
+  if (notes.length > notesToKeep.length) {
+    saveNotes(notesToKeep);
+    console.log(`Note with title ${title} removed successfully!`);
   } else {
-    console.log(`No note with title ${title} found!`);
+    console.log(`No note with title ${title} was found!`);
   }
 }
 
