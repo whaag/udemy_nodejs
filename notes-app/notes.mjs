@@ -1,5 +1,47 @@
-const getNotes = () => {
-    return 'Your notes...';
+import filesystem from 'fs';
+
+export const getNotes = () => {
+  return loadNotes();
 };
 
-module.exports = getNotes;
+export const addNote = (title, body) => {
+  const notes = loadNotes();
+
+  const duplicatedNotes = notes.filter((note) => note.title === title);
+  if (duplicatedNotes.length === 0) {
+    notes.push({
+      title: title,
+      body: body
+    });
+    saveNotes(notes);
+    console.log('New note added successfully!');
+  } else {
+    console.log(`Note with title ${title} already exists!`);
+  }
+};
+
+export const removeNote = (title) => {
+  const notes = loadNotes();
+  const noteToRemove = notes.filter((note) => note.title === title);
+
+  if (noteToRemove.length > 0) {
+    console.log(`Removed note with title ${title}`);
+  } else {
+    console.log(`No note with title ${title} found!`);
+  }
+}
+
+const loadNotes = () => {
+  try {
+    const dataBuffer = filesystem.readFileSync('notes.db');
+    const dataJSON = dataBuffer.toString();
+    return JSON.parse(dataJSON);
+  } catch (error) {
+    return [];
+  };
+};
+
+const saveNotes = (nottes) => {
+  const dataJSON = JSON.stringify(nottes);
+  filesystem.writeFileSync('notes.db', dataJSON);
+}

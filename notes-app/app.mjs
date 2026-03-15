@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import yargs from 'yargs';
+import { getNotes, addNote, removeNote } from './notes.mjs';
 
 const argv = yargs(process.argv.slice(2))
   .version('26.0')
@@ -18,12 +19,19 @@ const argv = yargs(process.argv.slice(2))
         type: 'string'
       }
     },
-    handler: (argv) => console.log('Adding the note', argv.title, ' with body:', argv.body)
+    handler: (argv) => addNote(argv.title, argv.body)
   })
   .command({
     command: 'remove',
     describe: 'Remove a note',
-    handler: () => console.log('Removing note...')
+    builder: {
+      title: {
+        describe: 'Note title',
+        demandOption: true,
+        type: 'string'
+      }
+    },
+    handler: (argv) => removeNote(argv.title)
   })
   .command({
     command: 'read',
@@ -33,7 +41,7 @@ const argv = yargs(process.argv.slice(2))
   .command({
     command: 'list',
     describe: 'List all notes',
-    handler: () => console.log('Listing all notes...')
+    handler: () => getNotes()
   })
   .parse();
 
