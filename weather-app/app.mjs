@@ -1,7 +1,9 @@
-console.log('Starting weather app...');
+import dotenv from 'dotenv';
 
-setTimeout(() => {
-  console.log('2 second timer');
-}, 2000);
+dotenv.config();
 
-console.log('End of weather app.');
+const url = `http://api.weatherstack.com/current?access_key=${process.env.API_KEY}&query=Dublin&units=m`;
+
+fetch(url)
+.then((response) => response.json())
+.then((data) => console.log(data.current.temperature));
