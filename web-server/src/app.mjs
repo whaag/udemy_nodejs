@@ -1,8 +1,13 @@
 import express from "express";
+import hbs from "hbs";
 
 const app = express();
 
-app.set('view engine', 'hbs');
+// Handlebar config
+app.set('view engine', 'hbs'); // enables hbs
+hbs.registerPartials('partials');
+
+// Express config
 app.use(express.static("public"));
 
 // app.com
