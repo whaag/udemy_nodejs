@@ -4,12 +4,14 @@
 <head>
     <title>Web server</title>
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="icon" href="/img/favicon.png" />
 </head>
 
 <body>
-    {{>header}}
-
-    <p style="color: red;">{{errorMessage}}</p>
+    <div class="main-content">
+        {{>header}}
+        <p style="color: red;">{{errorMessage}}</p>
+    </div>
 
     {{>footer}}
 </body>

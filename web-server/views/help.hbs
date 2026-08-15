@@ -3,11 +3,14 @@
   <head>
     <title>Web server</title>
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="icon" href="/img/favicon.png" />
   </head>
   <body>
-    {{>header}}
+    <div class="main-content">
+      {{>header}}
 
-    <p>Help of the day: {{message}}</p>
+      <p>Help of the day: {{message}}</p>
+    </div>
 
     {{>footer}}
   </body>
