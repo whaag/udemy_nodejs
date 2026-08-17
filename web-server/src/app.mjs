@@ -46,7 +46,23 @@ app.get("/help/*path", (request, response) => {
 
 // app.com/weather
 app.get("/weather", (request, response) => {
-  response.send(`Rain. It's Dublin, what did you think?`);
+  const address = request.query.address;
+
+  address? response.send({
+    forecast: 'rain',
+    location: address
+  }): response.send({
+    error: 'You must provide an address'
+  });
+});
+
+// Test
+app.get("/products", (request, response) => {
+  console.log(request.query);
+  if (!request.query.search) {
+    return response.send('You must provide a search term');
+  }
+  response.send({products: []})
 });
 
 // default
