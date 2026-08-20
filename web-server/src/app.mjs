@@ -48,12 +48,26 @@ app.get("/help/*path", (request, response) => {
 app.get("/weather", (request, response) => {
   const address = request.query.address;
 
-  address? response.send({
-    forecast: 'rain',
-    location: address
-  }): response.send({
+  address ? (() => {
+    const url = `https://api.open-meteo.com/v1/forecast?current=temperature_2m,precipitation_probability,apparent_temperature&latitude=53.3331&longitude=-6.2489`;
+
+    (async () => {
+      try {
+        await fetch(url)
+          .then((response) => response.json())
+          .then((data) => response.send({
+            Temperature: `${data.current.temperature_2m} ${data.current_units.temperature_2m}`,
+            FeelsLike: `${data.current.apparent_temperature} ${data.current_units.apparent_temperature}`,
+            Precipitation: `${data.current.precipitation_probability} ${data.current_units.precipitation_probability}`
+          }));
+      } catch (error) {
+        response.send({ error: `${error.message}` })
+      }
+    })();
+  })() : response.send({
     error: 'You must provide an address'
   });
+
 });
 
 // Test
@@ -62,7 +76,7 @@ app.get("/products", (request, response) => {
   if (!request.query.search) {
     return response.send('You must provide a search term');
   }
-  response.send({products: []})
+  response.send({ products: [] })
 });
 
 // default
