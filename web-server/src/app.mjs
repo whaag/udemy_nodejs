@@ -1,5 +1,6 @@
 import express from "express";
 import hbs from "hbs";
+import findLocation from "./location.mjs";
 
 const app = express();
 
@@ -47,15 +48,17 @@ app.get("/help/*path", (request, response) => {
 // app.com/weather
 app.get("/weather", (request, response) => {
   const address = request.query.address;
+  const location = findLocation(address);
 
   address ? (() => {
-    const url = `https://api.open-meteo.com/v1/forecast?current=temperature_2m,precipitation_probability,apparent_temperature&latitude=53.3331&longitude=-6.2489`;
+    const url = `https://api.open-meteo.com/v1/forecast?current=temperature_2m,precipitation_probability,apparent_temperature&latitude=${location.latitude}&longitude=${location.longitude}`;
 
     (async () => {
       try {
         await fetch(url)
           .then((response) => response.json())
           .then((data) => response.send({
+            Location: `${location.city}`,
             Temperature: `${data.current.temperature_2m} ${data.current_units.temperature_2m}`,
             FeelsLike: `${data.current.apparent_temperature} ${data.current_units.apparent_temperature}`,
             Precipitation: `${data.current.precipitation_probability} ${data.current_units.precipitation_probability}`
