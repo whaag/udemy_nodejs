@@ -75,11 +75,7 @@ app.get("/weather", (request, response) => {
 
 // Test
 app.get("/products", (request, response) => {
-  console.log(request.query);
-  if (!request.query.search) {
-    return response.send('You must provide a search term');
-  }
-  response.send({ products: [] })
+  response.send({ product: "banana" });
 });
 
 // default
