@@ -50,6 +50,10 @@ app.get("/weather", (request, response) => {
   const address = request.query.address;
   const location = findLocation(address);
 
+  if (!location.longitude || !location.latitude) {
+    response.send({ error: `Location ${address} not found` });
+  }
+
   address ? (() => {
     const url = `https://api.open-meteo.com/v1/forecast?current=temperature_2m,precipitation_probability,apparent_temperature&latitude=${location.latitude}&longitude=${location.longitude}`;
 
